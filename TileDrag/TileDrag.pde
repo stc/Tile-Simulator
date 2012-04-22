@@ -77,6 +77,8 @@ void draw()
   displayText();
 }
 
+boolean debounce = false;
+
 void keyPressed()
 {
   if (key == '1') addTile(1);
@@ -86,21 +88,24 @@ void keyPressed()
   if (key == '5') addTile(5);
   if (key == '6') addTile(6);
 
-  if (key == 'd')
+  if ((key == 'd') && !debounce && !tiles.isEmpty())
   {
-    for (int i=0; i< tiles.size(); i++)
-    {
-      Tile tile = (Tile) tiles.get(i);
+    debounce = true;
     
-        tiles.remove(tiles.size()-1);
-        tiles_posX.remove(tiles.size());
-        tiles_posY.remove(tiles.size());
-        p1posX.remove(tiles.size());
-        p1posY.remove(tiles.size());
-        p2posX.remove(tiles.size());
-        p2posY.remove(tiles.size());
-    }
+    tiles.remove(tiles.size()-1);
+    tiles_posX.remove(tiles.size());
+    tiles_posY.remove(tiles.size());
+    p1posX.remove(tiles.size());
+    p1posY.remove(tiles.size());
+    p2posX.remove(tiles.size());
+    p2posY.remove(tiles.size());
   }
+}
+
+void keyReleased()
+{
+  if (key == 'd')
+    debounce = false;
 }
 
 void displayText()
