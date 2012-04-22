@@ -5,6 +5,7 @@ int tiletypes = 6;
 //  all coordinates --------------------
 ArrayList allX;
 ArrayList allY;
+ArrayList touchPoints;
 //--------------------------------------
 
 //  storing positions of tiles
@@ -20,6 +21,7 @@ ArrayList p2posY;
 
 //  visualize coordinates
 Result result;
+Tracker tracker;
 
 int offset;
 
@@ -44,13 +46,17 @@ void setup()
   allX = new ArrayList();
   allY = new ArrayList();
   
+  touchPoints = new ArrayList();
+  
   result = new Result();
+  tracker = new Tracker();
 }
 
 void draw() 
 { 
   background(0);
  
+  touchPoints.clear();
   for (int i=0; i< tiles.size(); i++)
   {
     Tile tile = (Tile) tiles.get(i);
@@ -71,12 +77,19 @@ void draw()
     allX.set(i+tiles.size(),tile.point2x + offset);
     allY.set(i,tile.point1y);
     allY.set(i+tiles.size(),tile.point2y);
+    
+    touchPoints.add(new TouchPoint(int(tile.point1x + offset), int(tile.point1y)));
+    touchPoints.add(new TouchPoint(int(tile.point2x + offset), int(tile.point2y)));
   }
   
   
   //  visualize coordinates
+  /*
   result.draw(tiles_posX,tiles_posY,p1posX, p1posY,p2posX,p2posY);
   result.drawLines(allX,allY);
+  */
+  tracker.detect(touchPoints);
+  tracker.debugDraw();
   
   //  display info
   displayText();
@@ -129,7 +142,7 @@ void displayText()
 
 void addTile(int ID)
 {
-   tiles.add(new Tile(150,int(random(100))+100,100,0,ID));
+    tiles.add(new Tile(mouseX, mouseY, 100, 0, ID));
     tiles_posX.add(new Float(0.0));
     tiles_posY.add(new Float(0.0));
     p1posX.add(new Float(0.0));

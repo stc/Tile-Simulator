@@ -1,3 +1,5 @@
+boolean tileDragged = false; // a tile is dragged already
+
 class Tile
 {
   int x,y,r, ID; 
@@ -37,7 +39,11 @@ class Tile
       //  draw points to the surface 
       ellipseMode(CENTER);
       stroke(255,0,0,200);
-      
+
+   //  check which ID of the tile we have, select
+   //  pattern according to ID
+   checkID();  
+       
       point1x = x + cos(angle  + radians(45)) * p1x;
       point1y = y + sin(angle  + radians(45)) * p1y;
       ellipse(point1x,point1y,10,10);
@@ -46,10 +52,6 @@ class Tile
       point2y = y + sin(angle + radians(45)) * p2y;
       ellipse(point2x,point2y,10,10);
   
-   //  check which ID of the tile we have, select
-   //  pattern according to ID
-   checkID();  
-   
    //  check events
    checkDragging();
    checkRotating();
@@ -57,20 +59,24 @@ class Tile
   
   void checkDragging()
   {
-      if(mouseX >= x-r/2 && mouseX <= x+r/2 && mouseY >= y-r/2 && mouseY <= y+r/2 && mousePressed && (mouseButton == LEFT))
+      if (mouseX >= x-r/2 && mouseX <= x+r/2 && mouseY >= y-r/2 && mouseY <= y+r/2 && mousePressed && (mouseButton == LEFT)
+        && !tileDragged)
       {
+        tileDragged = true;
         drag = true;
       }
-      if(mouseX >= x-r/2 && mouseX <= x+r/2 && mouseY >= y-r/2 && mouseY <= y+r/2 && !mousePressed)
+      
+      if (drag)
       {
-        drag = false;
-      }
-     
-      if(drag) 
-      {
+          if (!mousePressed)
+          {
+            drag = false;
+            tileDragged = false;
+          }            
           moveTile();
       }
   }
+
   void checkRotating()
   {
       if(mouseX >= x-r/2 && mouseX <= x+r/2 && mouseY >= y-r/2 && mouseY <= y+r/2 && mousePressed && (mouseButton == RIGHT))
