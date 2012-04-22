@@ -3,8 +3,6 @@ ArrayList tiles;
 int tiletypes = 6;
 
 //  all coordinates --------------------
-ArrayList allX;
-ArrayList allY;
 ArrayList touchPoints;
 //--------------------------------------
 
@@ -18,9 +16,7 @@ ArrayList p1posY;
 ArrayList p2posX;
 ArrayList p2posY;
 
-
-//  visualize coordinates
-Result result;
+//  tile tracker
 Tracker tracker;
 
 int offset;
@@ -43,12 +39,7 @@ void setup()
   p2posX = new ArrayList();
   p2posY = new ArrayList();
   
-  allX = new ArrayList();
-  allY = new ArrayList();
-  
   touchPoints = new ArrayList();
-  
-  result = new Result();
   tracker = new Tracker();
 }
 
@@ -72,22 +63,13 @@ void draw()
     p1posY.set(i, tile.point1y);
     p2posX.set(i, tile.point2x + offset);
     p2posY.set(i, tile.point2y);
-  
-    allX.set(i,tile.point1x + offset);
-    allX.set(i+tiles.size(),tile.point2x + offset);
-    allY.set(i,tile.point1y);
-    allY.set(i+tiles.size(),tile.point2y);
     
     touchPoints.add(new TouchPoint(int(tile.point1x + offset), int(tile.point1y)));
     touchPoints.add(new TouchPoint(int(tile.point2x + offset), int(tile.point2y)));
   }
   
   
-  //  visualize coordinates
-  /*
-  result.draw(tiles_posX,tiles_posY,p1posX, p1posY,p2posX,p2posY);
-  result.drawLines(allX,allY);
-  */
+  //  track points
   tracker.detect(touchPoints);
   tracker.debugDraw();
   
@@ -103,7 +85,7 @@ void keyPressed()
   if (key == '4') addTile(4);
   if (key == '5') addTile(5);
   if (key == '6') addTile(6);
-  
+
   if (key == 'd')
   {
     for (int i=0; i< tiles.size(); i++)
@@ -117,10 +99,6 @@ void keyPressed()
         p1posY.remove(tiles.size());
         p2posX.remove(tiles.size());
         p2posY.remove(tiles.size());
-        allX.remove(tiles.size());
-        allX.remove(tiles.size());
-        allY.remove(tiles.size());
-        allY.remove(tiles.size());   
     }
   }
 }
@@ -133,11 +111,6 @@ void displayText()
   
   fill(100);
   text("DRAG: LEFT MOUSE BUTTON, ROTATE: RIGHT MOUSE BUTTON", 20,height-20);
-  
-  fill(0);
-  text("x positions of markers: " + allX, offset + 20, height-40);
-  text("y positions of markers: " + allY, offset + 20, height-20);
-  
 }
 
 void addTile(int ID)
@@ -149,9 +122,5 @@ void addTile(int ID)
     p1posY.add(new Float(0.0));
     p2posX.add(new Float(0.0));
     p2posY.add(new Float(0.0));
-    allX.add(new Float(0.0));
-    allX.add(new Float(0.0));
-    allY.add(new Float(0.0));
-    allY.add(new Float(0.0));
 }
 
