@@ -1,3 +1,5 @@
+import java.util.Collections;
+
 //  original tiles
 ArrayList tiles;
 int tiletypes = 6;
@@ -68,6 +70,8 @@ void draw()
     touchPoints.add(new TouchPoint(int(tile.point2x + offset), int(tile.point2y)));
   }
   
+  //  randomly permute the points to simulate real-life conditions
+  Collections.shuffle(touchPoints);
   
   //  track points
   tracker.detect(touchPoints);

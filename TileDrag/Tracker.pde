@@ -225,7 +225,7 @@ class Tracker
     }
   }
 
-  // set stroke color from tile id
+  // set stroke color from distance id
   void strokeFromId(int id)
   {
     switch (id)
